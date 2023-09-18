@@ -1,0 +1,277 @@
+# Access OS i3 config
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+#
+# This config file uses keycodes (bindsym) and was written for the QWERTY
+# layout.
+#
+# To get a config file with the same key positions, but for your current
+# layout, use the i3-config-wizard
+#
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:monospace 8
+
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+#font pango:DejaVu Sans Mono 8
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+#start picom
+exec picom &
+#start nitrogen
+exec nitrogen --restore
+#Play greeting on login (change as you see fit)
+#This greeting will be played instead of orca saying screen reader on.
+#Comment it out to disable it.
+exec echo "Welcome to Access OS! Screen reader on." | spd-say -e
+#Orca screenreader reads out the screen
+exec orca -r
+#Start clipster
+exec clipster -d
+#start polkit gnome
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+#enabling xscreensaver 
+exec xscreensaver -nosplash &
+#Play start up sound
+exec mplayer ~/.access-os/sounds/login.wav
+#start notification logger
+exec ~/.access-os/scripts/keep_log.sh
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+#Raise volume
+bindsym mod4+F10 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status & killall espeak & aplay ~/.access-os/sounds/vol.wav & sleep 0.04 && pamixer --get-volume | espeak -z
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status & killall espeak & aplay ~/.access-os/sounds/vol.wav & sleep 0.04 && pamixer --get-volume | espeak -z
+#Lower volume
+bindsym mod4+F9 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status & killall espeak & aplay ~/.access-os/sounds/vol.wav & sleep 0.04 && pamixer --get-volume | espeak -z
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status & killall espeak & aplay ~/.access-os/sounds/vol.wav & sleep 0.04 && pamixer --get-volume | espeak -z
+#Mute or unmute the audio
+bindsym mod4+F8 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status & killall espeak & sleep 0.1 && echo "unmuted" | espeak -z & aplay ~/.access-os/sounds/vol.wav
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status & killall espeak & sleep 0.1 && echo "unmuted" | espeak -z & aplay ~/.access-os/sounds/vol.wav
+#Raise mic volume
+bindsym mod4+F3 exec --no-startup-id pactl set-source-volume @DEFAULT_SOURCE@ +10% && $refresh_i3status & aplay ~/.access-os/sounds/vol.wav
+#Lower mic volume
+bindsym mod4+F2 exec --no-startup-id pactl set-source-volume @DEFAULT_SOURCE@ -10% && $refresh_i3status & aplay ~/.access-os/sounds/vol.wav
+#Mute microphone
+#There is no audio feedback to tell the user the status of the microphone (muted/unmuted) therefore this is disabled by defauld.
+#Enable this if you wish by uncommenting the lines below.
+#bindsym mod4+F1 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# Start notification daemon
+exec /usr/lib/notification-daemon-1.0/notification-daemon
+# Set default workspace layout
+workspace_layout tabbed
+
+# use these keys for focus, movement, and resize directions when reaching for
+# the arrows is not convenient
+set $up l
+set $down k
+set $left j
+set $right semicolon
+
+# use Mouse+mod4 to drag floating windows to their wanted position
+floating_modifier mod4
+
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
+
+# OCR the current window
+bindsym mod4+mod1+w exec ocrdesktop
+#OCR the desktop
+bindsym mod4+mod1+o exec ocrdesktop -d
+#OCR image from clipboard
+bindsym mod4+mod1+i exec ocrdesktop -C
+#start a terminal
+bindsym mod1+Control+t exec lxterminal
+
+# kill focused window
+bindsym mod1+F4 kill
+#Starts the screen reader or restarts it if already running
+bindsym mod4+Shift+o exec orca --r
+# Kill the screen reader
+bindsym mod4+o exec killall orca
+
+# Run a command
+bindsym mod4+r exec gmrun
+#start the application finder
+bindsym Mod4+D exec xfce4-appfinder
+#Opens file manager
+bindsym Mod4+Shift+P exec caja
+#Open web browser
+bindsym Mod4+Shift+W exec firefox
+#take a screenshot of the entire screen
+bindsym Print exec "scrot -e 'mv $f ~/Screenshots' && aplay ~/.access-os/sounds/screenshot.wav & echo 'screenshot taken' | spd-say -e"
+#take a screenshot of the current window
+bindsym mod4+Print exec "scrot -ue 'mv $f ~/Screenshots' && aplay ~/.access-os/sounds/screenshot.wav & echo 'screenshot taken of current window' | spd-say -e"
+# change focus
+bindsym mod1+Shift+Tab focus prev
+bindsym mod1+Tab focus next
+bindsym mod4+$left focus left
+bindsym mod4+$down focus down
+bindsym mod4+$up focus up
+bindsym mod4+$right focus right
+# alternatively, you can use the cursor keys:
+bindsym mod4+Left focus left
+bindsym mod4+Down focus down
+bindsym mod4+Up focus up
+bindsym mod4+Right focus right
+
+# move focused window
+bindsym mod4+Shift+$left move left
+bindsym mod4+Shift+$down move down
+bindsym mod4+Shift+$up move up
+bindsym mod4+Shift+$right move right
+
+# alternatively, you can use the cursor keys:
+bindsym mod4+Shift+Left move left
+bindsym mod4+Shift+Down move down
+bindsym mod4+Shift+Up move up
+bindsym mod4+Shift+Right move right
+
+# split in horizontal orientation
+bindsym mod4+h split h
+
+# split in vertical orientation
+bindsym mod4+v split v
+
+# enter fullscreen mode for the focused container
+bindsym mod4+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym mod4+s layout stacking
+bindsym mod4+w layout tabbed
+bindsym mod4+e layout toggle split
+
+# toggle tiling / floating
+bindsym mod4+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym mod4+space focus mode_toggle
+
+# focus the parent container
+bindsym mod4+Shift+a focus parent
+
+# focus the child container
+bindsym mod4+Shift+d focus child
+
+# move the currently focused window to the scratchpad
+bindsym mod4+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym mod4+minus scratchpad show
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch to workspace
+bindsym mod4+1 workspace number $ws1
+bindsym mod4+2 workspace number $ws2
+bindsym mod4+3 workspace number $ws3
+bindsym mod4+4 workspace number $ws4
+bindsym mod4+5 workspace number $ws5
+bindsym mod4+6 workspace number $ws6
+bindsym mod4+7 workspace number $ws7
+bindsym mod4+8 workspace number $ws8
+bindsym mod4+9 workspace number $ws9
+bindsym mod4+0 workspace number $ws10
+
+# move focused container to workspace
+bindsym mod4+Shift+1 move container to workspace number $ws1
+bindsym mod4+Shift+2 move container to workspace number $ws2
+bindsym mod4+Shift+3 move container to workspace number $ws3
+bindsym mod4+Shift+4 move container to workspace number $ws4
+bindsym mod4+Shift+5 move container to workspace number $ws5
+bindsym mod4+Shift+6 move container to workspace number $ws6
+bindsym mod4+Shift+7 move container to workspace number $ws7
+bindsym mod4+Shift+8 move container to workspace number $ws8
+bindsym mod4+Shift+9 move container to workspace number $ws9
+bindsym mod4+Shift+0 move container to workspace number $ws10
+
+#Reload or restart i3
+# reload the configuration file
+bindsym mod4+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym mod4+Shift+r restart
+
+#Clipboard history
+#Clipster
+bindsym Mod1+Control+c exec clipster -s
+#Reboot the system
+bindsym mod1+Control+Delete exec echo "rebooting" | espeak -z && reboot
+#Shut down the system
+bindsym mod1+Control+Shift+Delete exec echo "Shutting down" | espeak && shutdown now
+#Logout
+bindsym mod4+mod1+l exit
+#Checking system resources on the fly
+#Both neofetch and progress need to be installed on your system for this to work.
+#Announce used memory
+bindsym mod4+mod1+1 exec ~/.access-os/scripts/memory.sh
+# Announce storage used on disk
+bindsym mod4+mod1+2 exec ~/.access-os/scripts/disk.sh
+# Announce kernel version
+bindsym mod4+mod1+3 exec ~/.access-os//scripts/kernel.sh
+# Announce number of installed packages
+bindsym mod4+mod1+4 exec ~/.access-os//scripts/packages.sh
+# Announce progress for file operations. This only works with command line, it may not work in a graphical file manager.
+bindsym mod4+mod1+5 exec ~/.access-os/scripts/file-ops.sh
+# Announce system battery if available
+bindsym mod4+mod1+6 exec ~/.access-os/scripts/battery.sh
+# Announce CPU uptime
+bindsym mod4+mod1+7 exec ~/.access-os/scripts/uptime.sh
+#Date and time
+#Speak the current time
+bindsym mod4+mod1+t exec ~/.access-os/scripts/time.sh
+#Speak the current date
+bindsym mod4+mod1+d exec ~/.access-os/scripts/date.sh
+
+
+
+
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+#        status_command i3status
+#position bottom
+#    tray_output primary
+#    font pango: Hack, Font Awesome 5 Free Regular 10
+#    separator_symbol "  "
+#    colors {
+#        background #000000
+#        statusline #ffffff
+#        separator #586e75
+#    }
+
+}
+
+#######################################################################
+# automatically start i3-config-wizard to offer the user to create a
+# keysym-based config which used their favorite modifier (alt or windows)
+#
+# i3-config-wizard will not launch if there already is a config file
+# in ~/.config/i3/config (or $XDG_CONFIG_HOME/i3/config if set) or
+# ~/.i3/config.#
+
