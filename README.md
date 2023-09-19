@@ -1,5 +1,5 @@
 # access-os
 
-An arch linux based accessible distro.
+Access OS is an accessible Linux distribution for the blind and visually impaired, based on Archlinux.
 
-This is beta software. Their is a lot of work that needs to be done.
+Note that this distro is still in its early stages of development. Their is still a lot of work that needs to be done.
