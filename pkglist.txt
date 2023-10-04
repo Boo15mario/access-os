@@ -1,3 +1,6 @@
+stack
+cabal-install
+ghc
 ttf-ms-fonts
 bat
 ttf-ubuntu-font-family
