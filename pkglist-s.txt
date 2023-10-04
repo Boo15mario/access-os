@@ -1,3 +1,6 @@
+stack
+cabal-install
+ghc
 tmate
 ruby
 xrdp
