@@ -1,3 +1,4 @@
+ufw
 tlp
 stack
 cabal-install
