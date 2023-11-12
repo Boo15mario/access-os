@@ -3,4 +3,5 @@ export GTK_MODULES=gail:atk-bridge
 export GNOME_ACCESSIBILITY=1
 export QT_ACCESSIBILITY=1
 export QT_LINUX_ACCESSIBILITY_ALWAYS_ON=1
-startx
+
+systemctl start tailscale
