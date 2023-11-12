@@ -18,5 +18,3 @@ sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist
 # Enable NetworkManager
 systemctl enable NetworkManager.service
 
-#enable tailscale service
-systemctl enable tailscale
