@@ -42,8 +42,7 @@ hdparm
 hyperv
 intel-ucode
 irssi
-iw
-iwd
+networkmanager
 jfsutils
 kitty-terminfo
 less
