@@ -1,7 +1,0 @@
-
-repo-add access_os.db.tar.gz *.pkg.tar.zst
-
-
-[access_os]
-SigLevel=Optional
-Server = https://access-os.boo15mario.boo/access_os/x86_64
