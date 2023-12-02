@@ -1,0 +1,4 @@
+archlinux-tweak-tool-git
+clipster
+fenrir-git
+python-pdf2image

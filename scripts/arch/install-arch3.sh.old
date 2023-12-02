@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "This script is depricated and will soon be removed."
+sleep 2
+clear
+echo "installing grub and enabling a few services"
+echo "Installing efibootmgr (required for Grub install on UEFI)."
+pacman -S --noconfirm --needed efibootmgr
+sleep 1
+read -p "Warning. You are about to make your system bootable. Also note that grub creates a boot entry in your UEFI firmware settings. If your boot entries are full, the installation will fail. To continue with the installation, press enter. To cancel, press control+c."
+echo "Installing GRUB"
+pacman -S --noconfirm --needed grub
+mkdir -p -v /boot/efi
+mount -v /dev/sdc1 /boot/efi
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+grub-mkconfig -o /boot/grub/grub.cfg
+
+#systemctl enable NetworkManager
+#systemctl enable gdm
+#rm -v desktop-list.txt
+sleep 1
+echo "Cleaning up..."
+rm -v install-arch2.sh
+#rm -v install-arch3.sh
+exit 0

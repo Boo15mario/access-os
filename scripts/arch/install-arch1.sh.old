@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ "$(id -u)" != "0" ]; then
+   echo "Error: You must run this script as root." 1>&2
+exit 1
+fi
+echo "This script is depricated and will soon be removed."
+sleep 2
+clear
+echo "installing arch linux to your system. Their will be some manual steps required at the end. Notes will be provided at the end once the script closes. Before you continue, make sure your root partition is mounted in /mnt."
+read -p "Press enter to continue, or control+c to abort."
+pacstrap /mnt base base-devel git wget nano sudo grub networkmanager openssh linux linux-headers linux-firmware mtools os-prober efibootmgr 
+genfstab -U /mnt >> /mnt/etc/fstab
+echo "You will now be chrooted into the install. Download and run the second script to continue."
+arch-chroot /mnt
+exit 0

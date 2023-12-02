@@ -1,0 +1,32 @@
+#!/bin/bash
+echo "This script is depricated and will soon be removed."
+sleep 2
+clear
+echo "setting the timezone for local time"
+ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+echo "done setting the timezone"
+
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+echo "setting the host name"
+echo home1server > /etc/hostname
+echo "done"
+echo "creating user account"
+useradd -m -G wheel,audio,video,storage,power alek
+echo "done"
+echo "The 3rd install script will now be downloaded for you. You must complete the manual steps printed below, then run it to continue the installation."
+#wget https://boo15mario.boo/scripts/arch/desktop-list.txt
+#wget https://boo15mario.boo/scripts/arch/install-arch3.sh
+
+
+
+
+echo "Downloaded install-arch3.sh. Complete the steps below to continue"
+echo "Run the following commands, one by one, as printed below."
+echo 'Edit "/etc/locale.gen" and uncomment "en_US.UTF-8" to set locales.'
+echo "locale-gen"
+echo "export LANG=en_US.UTF-8"
+echo "set the password for both root and your user"
+echo 'Type "EDITOR=nano visudo" in terminal to edit the visudo file. You must uncomment the "%wheel ALL=(ALL:ALL) ALL" line for sudo access.'
+echo "run the third install script to install grub and enable a few services as well as cleanup the system"
+
+exit 0
