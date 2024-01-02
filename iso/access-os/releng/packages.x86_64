@@ -1,10 +1,8 @@
 access-os-installer
 figlet
-smartmontools
 alsa-utils
 amd-ucode
 arch-install-scripts
-archinstall
 b43-fwcutter
 base
 base-devel
