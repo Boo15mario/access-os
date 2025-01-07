@@ -8,7 +8,7 @@ ConditionKernelCommandLine=accessibility=on
 Type=oneshot
 TTYPath=/dev/tty13
 ExecStartPre=/usr/bin/chvt 13
-ExecStart=/usr/local/bin/livecd-sound -p
+ExecStart=/usr/bin/card-picker
 ExecStartPost=/usr/bin/chvt 1
 ExecStartPost=systemctl start espeakup.service
 StandardInput=tty
