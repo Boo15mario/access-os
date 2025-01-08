@@ -1,1 +1,0 @@
-mkarchiso -v -w ~/builds/work -o ~/builds/out /home/max/git/access-os/iso/access-os/releng/
