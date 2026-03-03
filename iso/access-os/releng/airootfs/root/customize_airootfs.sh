@@ -18,3 +18,9 @@ sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist
 # Enable NetworkManager
 systemctl enable NetworkManager.service
 
+# Compile dconf database
+dconf update
+
+# Create liveuser home directory
+install -d -o 1000 -g 1000 /home/liveuser
+

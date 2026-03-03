@@ -1,0 +1,11 @@
+[org/gnome/desktop/a11y/applications]
+screen-reader-enabled=true
+
+[org/gnome/desktop/interface]
+toolkit-accessibility=true
+color-scheme='prefer-dark'
+accent-color='orange'
+
+[org/gnome/desktop/sound]
+theme-name='ocean'
+event-sounds=true
