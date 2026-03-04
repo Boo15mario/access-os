@@ -87,6 +87,7 @@ partclone
 parted
 partimage
 pcsclite
+pkgconf
 ppp
 pptpclient
 pv
@@ -104,6 +105,8 @@ smartmontools
 sof-firmware
 squashfs-tools
 sudo
+rust
+cargo
 syslinux
 systemd-resolvconf
 tcpdump
@@ -139,6 +142,8 @@ firefox
 gnome
 gnome-extra
 gdm
+gtk4
+lxterminal
 ocean-sound-theme
 xorg-server
 pipewire
