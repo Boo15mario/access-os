@@ -15,6 +15,8 @@ Environment overrides:
   HOST_BUILDS_ROOT  Host path mounted to /tmp/builds in container (default: /tmp/builds)
   WORK_SUBDIR       Work dir under /tmp/builds (default: work)
   OUT_SUBDIR        Output dir under /tmp/builds (default: out)
+  CLEAN_BEFORE_BUILD Remove stale work/output dirs before build: 1=enabled
+                     (default), 0=disabled
   AUTO_CREATE_POLICY Auto-create /etc/containers/policy.json for sudo podman if
                      missing: 1=enabled (default), 0=disabled
 
@@ -46,6 +48,7 @@ PROFILE_REL="${PROFILE_REL:-./iso/access-os/releng}"
 HOST_BUILDS_ROOT="${HOST_BUILDS_ROOT:-/tmp/builds}"
 WORK_SUBDIR="${WORK_SUBDIR:-work}"
 OUT_SUBDIR="${OUT_SUBDIR:-out}"
+CLEAN_BEFORE_BUILD="${CLEAN_BEFORE_BUILD:-1}"
 AUTO_CREATE_POLICY="${AUTO_CREATE_POLICY:-1}"
 
 if ! command -v nix >/dev/null 2>&1; then
@@ -69,9 +72,11 @@ fi
 container_build_root="/tmp/builds"
 container_work_dir="${container_build_root}/${WORK_SUBDIR}"
 container_out_dir="${container_build_root}/${OUT_SUBDIR}"
+host_work_dir="${HOST_BUILDS_ROOT%/}/${WORK_SUBDIR}"
+host_out_dir="${HOST_BUILDS_ROOT%/}/${OUT_SUBDIR}"
 
 printf -v container_inner_cmd \
-  "set -euo pipefail; pacman -Syu --noconfirm archiso; cd /work; mkarchiso -v -w %q -o %q %q" \
+  "set -euo pipefail; pacman-key --init; pacman-key --populate archlinux; pacman -Syu --noconfirm archiso grub; cd /work; mkarchiso -v -w %q -o %q %q" \
   "${container_work_dir}" \
   "${container_out_dir}" \
   "${PROFILE_REL}"
@@ -120,6 +125,17 @@ if [[ "${AUTO_CREATE_POLICY}" == "1" ]] && [[ "${podman_cmd_arr[0]}" == "sudo" ]
   }
 }
 EOF
+  fi
+fi
+
+if [[ "${CLEAN_BEFORE_BUILD}" == "1" ]]; then
+  echo "Info: cleaning previous build dirs:"
+  echo "  ${host_work_dir}"
+  echo "  ${host_out_dir}"
+  if [[ "${podman_cmd_arr[0]}" == "sudo" ]]; then
+    sudo rm -rf -- "${host_work_dir}" "${host_out_dir}"
+  else
+    rm -rf -- "${host_work_dir}" "${host_out_dir}"
   fi
 fi
 
