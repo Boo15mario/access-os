@@ -15,6 +15,8 @@ Environment overrides:
   HOST_BUILDS_ROOT  Host path mounted to /tmp/builds in container (default: /tmp/builds)
   WORK_SUBDIR       Work dir under /tmp/builds (default: work)
   OUT_SUBDIR        Output dir under /tmp/builds (default: out)
+  AUTO_CREATE_POLICY Auto-create /etc/containers/policy.json for sudo podman if
+                     missing: 1=enabled (default), 0=disabled
 
 Examples:
   ./scripts/build-iso-nix.sh
@@ -44,6 +46,7 @@ PROFILE_REL="${PROFILE_REL:-./iso/access-os/releng}"
 HOST_BUILDS_ROOT="${HOST_BUILDS_ROOT:-/tmp/builds}"
 WORK_SUBDIR="${WORK_SUBDIR:-work}"
 OUT_SUBDIR="${OUT_SUBDIR:-out}"
+AUTO_CREATE_POLICY="${AUTO_CREATE_POLICY:-1}"
 
 if ! command -v nix >/dev/null 2>&1; then
   echo "Error: nix is required but was not found in PATH." >&2
@@ -101,6 +104,23 @@ if [[ "${DRY_RUN}" == "1" ]]; then
   echo
   echo "Dry run only. No build started."
   exit 0
+fi
+
+if [[ "${AUTO_CREATE_POLICY}" == "1" ]] && [[ "${podman_cmd_arr[0]}" == "sudo" ]]; then
+  if ! sudo test -f /etc/containers/policy.json; then
+    echo "Info: /etc/containers/policy.json is missing. Creating it for rootful podman."
+    sudo mkdir -p /etc/containers
+    sudo tee /etc/containers/policy.json >/dev/null <<'EOF'
+{
+  "default": [{"type": "reject"}],
+  "transports": {
+    "docker": {
+      "docker.io/library/archlinux": [{"type": "insecureAcceptAnything"}]
+    }
+  }
+}
+EOF
+  fi
 fi
 
 "${cmd[@]}"
