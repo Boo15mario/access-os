@@ -2,6 +2,17 @@
 
 Access OS is an accessible Arch Linux based distribution for blind and visually impaired users.
 
+## Project docs
+
+Project documentation lives in [`docs/`](./docs/README.md).
+
+Recommended starting points:
+- [`docs/stack-overview.md`](./docs/stack-overview.md)
+- [`docs/build-and-release-flow.md`](./docs/build-and-release-flow.md)
+- [`docs/current-status.md`](./docs/current-status.md)
+- [`docs/next-steps.md`](./docs/next-steps.md)
+- [`docs/work-log.md`](./docs/work-log.md)
+
 ## Package repositories
 
 Access OS uses two pacman repositories published from the `access-os-packages` project:
